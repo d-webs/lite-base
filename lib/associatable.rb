@@ -1,4 +1,4 @@
-require_relative '02_searchable'
+require_relative 'searchable'
 require 'active_support/inflector'
 
 class AssocOptions
@@ -51,11 +51,11 @@ module Associatable
   def belongs_to(name, options = {})
     options_object = BelongsToOptions.new(name, options)
 
-    define_method(name) {
-      options.model_class.where(
+    define_method(name) do
+      options_object.model_class.where(
         id: self.send(options_object.foreign_key)
       ).first
-    }
+    end
 
     assoc_options[name] = options_object
   end

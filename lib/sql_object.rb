@@ -1,9 +1,13 @@
 require_relative 'db_connection'
 require 'active_support/inflector'
-require 'byebug'
+
+class UnknownAttributeError < ArgumentError
+  def initialize(message = "Unknown attribute")
+    super
+  end
+end
 
 class SQLObject
-  
   def self.columns
     @columns ||= DBConnection.execute2(<<-SQL).first.map(&:to_sym)
       SELECT
@@ -41,7 +45,7 @@ class SQLObject
         #{self.table_name}
     SQL
 
-    parse_all(attr_hashes)
+    self.parse_all(attr_hashes)
   end
 
   def self.parse_all(results)
@@ -72,7 +76,7 @@ class SQLObject
       if self.class.columns.include?(attr_name)
         send("#{attr_name}=", val)
       else
-        raise "unknown attribute '#{attr_name}'"
+        raise UnknownAttributeError, "Unknown Attribute: #{attr_name} for class #{self.class}"
       end
     end
   end
@@ -82,7 +86,7 @@ class SQLObject
   end
 
   def attribute_values
-    vals = self.class.columns.map do |col|
+    self.class.columns.map do |col|
       self.send(col)
     end
   end
