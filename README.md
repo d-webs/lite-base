@@ -4,7 +4,7 @@ LiteBase is a lightweight ORM tool written in Ruby. This project utilizes severa
 
 ## SqlObject
 
-This serves as the super class for all LiteBase objects. It includes all CRUD methods, include `::find`, `#update`, `#insert`, `#finalize!`, `#save`, `::all`, and more. Caching techniques are used to ensure the database does not get hit during repetitive queries.
+This serves as the super class for all LiteBase objects. It includes all CRUD methods, including `::find`, `#update`, `#insert`, `#finalize!`, `#save`, `::all`, and more. Caching techniques are used to ensure the database does not get hit during repetitive queries.
 
 ```ruby
   def self.columns
